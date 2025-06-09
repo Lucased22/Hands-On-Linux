@@ -2,7 +2,7 @@
 int ledPin = 18;     // GPIO do LED
 int ldrPin = 34;     // GPIO analógico do LDR
 
-int ldrMax = 4000;   // Valor máximo estimado do LDR (ajuste conforme seu teste)
+int ldrMax = 3026;   // Valor máximo estimado do LDR (ajuste conforme seu teste)
 int led_intensity = 10;  // Valor inicial do LED
 
 void setup() {
@@ -32,23 +32,27 @@ void loop() {
 void processCommand(String command) {
   if (command.startsWith("SET_LED ")) {
     int value = command.substring(8).toInt();
+
     if (value >= 0 && value <= 100) {
       ledUpdate(value);
-      Serial.println("OK");
+      Serial.println("RES SET_LED 1"); // tratamento das resposta com base na condição
     } else {
-      Serial.println("IGNORED");
+      Serial.println("RES SET_LED -1");
     }
 
   } else if (command == "GET_LED") {
+    Serial.print("RES GET_LED ");
     Serial.println(led_intensity);
 
   } else if (command == "GET_LDR") {
+    int ldrValue = ldrGetValue();
+    Serial.print("RES GET_LDR ");
+    Serial.println(ldrValue);
 
   } else {
-    Serial.println("UNKNOWN_COMMAND");
+    Serial.println("ERR Unknown command.");
   }
 }
-
 // Atualiza intensidade do LED via PWM
 void ledUpdate(int value) {
   led_intensity = value;
@@ -56,10 +60,13 @@ void ledUpdate(int value) {
   ledcWrite(0, pwmValue);
 }
 
+int getLDRNormalized(int value) {
+  return ((float)value/100)*255;
+}
+
 // Lê e normaliza o valor do LDR (0 a 100)
-//int ldrGetValue() {
- // int ldrRaw = analogRead(ldrPin);
-  //ldrRaw = constrain(ldrRaw, 0, ldrMax);   // Garante que não ultrapasse ldrMax
- // int ldrNormalized = map(ldrRaw, 0, ldrMax, 0, 100); // Converte para 0–100
-  //return ldrNormalized;
-//}
+int ldrGetValue() {
+  int ldrValueRead = analogRead(ldrPin);
+  int percent = map(ldrValueRead, 0, 1023, 0, 100);
+  return percent;
+}
