@@ -17,6 +17,8 @@ void setup() {
   // Inicializa o LED com brilho 10%
   ledUpdate(led_intensity);
 
+  processCommand("GET_LDR");
+
   Serial.println("SmartLamp Initialized.");
 }
 
