@@ -28,8 +28,8 @@ MODULE_INFO(retpoline, "Y");
 static const struct modversion_info ____versions[]
 __used __section("__versions") = {
 	{ 0xe6616ea7, "module_layout" },
-	{ 0xbb0dd01, "usb_deregister" },
-	{ 0x32f6bfa8, "usb_register_driver" },
+	{ 0x7b11b334, "usb_deregister" },
+	{ 0x89519749, "usb_register_driver" },
 	{ 0xd0da656b, "__stack_chk_fail" },
 	{ 0xeb233a45, "__kmalloc" },
 	{ 0x93c7edeb, "usb_find_common_endpoints" },
